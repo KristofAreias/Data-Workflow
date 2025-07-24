@@ -29,7 +29,7 @@ jobs:
 
       - name: 🚀 Voer Makefile uit
         run: make all
-        working-directory: ./Data-Workflow
+        working-directory: ./
         
       - name: 📤 Commit en push gegenereerde bestanden
         run: |
