@@ -1,0 +1,39 @@
+name: Data Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 * * * *'  # Elk uur uitvoeren
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: 🧰 Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            jq \
+            make \
+            gnuplot \
+            pandoc \
+            texlive-latex-base \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-latex-extra
+          pip install pandas matplotlib
+
+      - name: 🚀 Voer Makefile uit
+        run: make all
