@@ -28,20 +28,29 @@ Niet genoeg data om statistiek of trends te berekenen. Voeg meer datapunten toe.
 ## Data
 | Timestamp       | Temperature (°C) | Energy Price (EUR) |
 EOL
+
     while IFS=',' read -r timestamp temp price; do
       if [[ "$timestamp" != "timestamp" ]]; then
         echo "| $timestamp | $temp | $price |" >> "$REPORT_MD"
       fi
-done < "$CSV_FILE"
-else
-    # Basisstatistieken berekenen met awk
-    energy_mean=$(awk -F, 'NR>1 {sum+=$3; count++} END {print sum/count}' "$CSV_FILE")
-    energy_std=$(awk -F, -v mean="$energy_mean" 'NR>1 {sum+=($3-mean)^2; count++} END {print sqrt(sum/count)}' "$CSV_FILE")
-    temp_mean=$(awk -F, 'NR>1 {sum+=$2; count++} END {print sum/count}' "$CSV_FILE")
-    temp_std=$(awk -F, -v mean="$temp_mean" 'NR>1 {sum+=($2-mean)^2; count++} END {print sqrt(sum/count)}' "$CSV_FILE")
+    done < "$CSV_FILE"
 
-    # Correlatie berekenen tussen temperatuur en energieprijs
-    correlation=$(awk -F, 'NR>1 {x+=$2;y+=$3;xx+=$2*$2;yy+=$3*$3;xy+=$2*$3;n++} END {print (n*xy-x*y)/sqrt((n*xx-x*x)*(n*yy-y*y))}' "$CSV_FILE")
+else
+    # Statistieken berekenen (met veilige fallback naar 0)
+    energy_mean=$(awk -F, 'NR>1 && $3 != "" {sum+=$3; count++} END {if(count>0) print sum/count; else print 0}' "$CSV_FILE")
+    energy_std=$(awk -F, -v mean="$energy_mean" 'NR>1 && $3 != "" {sum+=($3-mean)^2; count++} END {if(count>0) print sqrt(sum/count); else print 0}' "$CSV_FILE")
+    temp_mean=$(awk -F, 'NR>1 && $2 != "" {sum+=$2; count++} END {if(count>0) print sum/count; else print 0}' "$CSV_FILE")
+    temp_std=$(awk -F, -v mean="$temp_mean" 'NR>1 && $2 != "" {sum+=($2-mean)^2; count++} END {if(count>0) print sqrt(sum/count); else print 0}' "$CSV_FILE")
+
+    # Correlatie berekenen
+    correlation=$(awk -F, 'NR>1 && $2 != "" && $3 != "" {
+        x+=$2; y+=$3; xx+=$2*$2; yy+=$3*$3; xy+=$2*$3; n++
+    } END {
+        if (n>1 && (n*xx - x*x)*(n*yy - y*y) > 0)
+            print (n*xy - x*y)/sqrt((n*xx - x*x)*(n*yy - y*y));
+        else
+            print 0
+    }' "$CSV_FILE")
 
     # Markdown rapport genereren
     cat <<EOL > "$REPORT_MD"
@@ -61,30 +70,15 @@ This report analyzes the relationship between temperature (°C) and energy price
 
 ## Data
 | Timestamp       | Temperature (°C) | Energy Price (EUR) |
-
 EOL
 
-    # CSV data
     while IFS=',' read -r timestamp temp price; do
-      # Sla header en onvolledige/lege regels over
       if [[ "$timestamp" == "timestamp" ]] || [[ -z "$timestamp" || -z "$temp" || -z "$price" ]]; then
         continue
       fi
       echo "| $timestamp | $temp | $price |" >> "$REPORT_MD"
     done < "$CSV_FILE"
 
-    # Plot maken met gnuplot (indien beschikbaar)
-    if command -v gnuplot &> /dev/null; then
-        cat <<EOF | gnuplot
-set datafile separator ","
-set terminal pngcairo size 800,600
-set output "$GRAPH_FILE"
-set title "Temperature vs Energy Price"
-set xlabel "Temperature (°C)"
-set ylabel "Energy Price (EUR)"
-plot "$CSV_FILE" using 2:3 with points title 'Data points'
-EOF
-    fi
 fi
 
 # Markdown naar PDF met pandoc

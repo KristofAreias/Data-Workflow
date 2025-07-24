@@ -2,42 +2,58 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
-import os
 
-# Laad de gecombineerde data
-CSV_FILE = './processed_data/combined_data.csv'
-OUTPUT_DIR = './reports'
-GRAPH_FILE = os.path.join(OUTPUT_DIR, 'temp_vs_energy.png')
+# Inlezen van de CSV
+df = pd.read_csv("./processed_data/combined_data.csv", parse_dates=["timestamp"])
+df = df.sort_values("timestamp")
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+# Check op voldoende datapunten
+if df.shape[0] < 2:
+    print("❌ Niet genoeg datapunten om trends te tonen.")
+    exit(1)
 
-df = pd.read_csv(CSV_FILE, parse_dates=['timestamp'])
-
-# Alleen geldige rijen gebruiken
-valid_df = df.dropna(subset=["timestamp", "temp_celsius", "energy_euro"])
-valid_df = valid_df[valid_df["timestamp"].astype(str).str.len() > 5]  # filter korte/ongeldige timestamps
-
-valid_df = valid_df.sort_values(by='timestamp')  # sorteer chronologisch
-
-fig, ax1 = plt.subplots(figsize=(12, 6))
+# Grafiek
+fig, ax1 = plt.subplots(figsize=(10, 5))
 ax2 = ax1.twinx()
 
-ax1.plot(valid_df['timestamp'], valid_df['temp_celsius'], label='Temperature (°C)', color='red', marker='o')
-ax2.plot(valid_df['timestamp'], valid_df['energy_euro'], label='Energy Price (EUR)', color='blue', linestyle='--', marker='x')
+# Temperatuur op linker y-as
+ax1.plot(
+    df["timestamp"],
+    df["temp_celsius"],
+    color="red",
+    marker="o",
+    linestyle="-",
+    label="Temperatuur (°C)"
+)
+ax1.set_ylabel("Temperatuur (°C)", color="red")
+ax1.tick_params(axis="y", labelcolor="red")
 
-ax1.set_xlabel('Timestamp')
-ax1.set_ylabel('Temperature (°C)', color='red')
-ax2.set_ylabel('Energy Price (EUR)', color='blue')
+# Energieprijs op rechter y-as
+ax2.plot(
+    df["timestamp"],
+    df["energy_euro"],
+    color="blue",
+    marker="x",
+    linestyle="--",
+    label="Energieprijs (EUR)"
+)
+ax2.set_ylabel("Energieprijs (EUR)", color="blue")
+ax2.tick_params(axis="y", labelcolor="blue")
 
-plt.title('Temperature and Energy Price over Time')
+# X-as: tijdstempels onderaan
+ax1.set_xlabel("Tijdstip")
 fig.autofmt_xdate(rotation=45)
 
-# Legenda
-handles1, labels1 = ax1.get_legend_handles_labels()
-handles2, labels2 = ax2.get_legend_handles_labels()
-ax1.legend(handles1 + handles2, labels1 + labels2, loc='upper left')
-
+# Titel
+plt.title("Temperatuur en Energieprijs over Tijd")
 ax1.grid(True)
+
+# Legenda combineren
+lines1, labels1 = ax1.get_legend_handles_labels()
+lines2, labels2 = ax2.get_legend_handles_labels()
+ax1.legend(lines1 + lines2, labels1 + labels2, loc="upper left")
+
+# Layout
 plt.tight_layout()
-plt.savefig(GRAPH_FILE, bbox_inches='tight')
-print(f"Lijnplot gegenereerd: {GRAPH_FILE}")
+plt.savefig("./reports/temp_vs_energy.png")
+plt.show()

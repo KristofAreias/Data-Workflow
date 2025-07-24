@@ -4,6 +4,8 @@ ENERGY_FILE="./raw_data/energy-data.csv"
 WEATHER_FILE="./raw_data/weer-data.csv"
 OUTPUT_FILE="./processed_data/combined_data.csv"
 
+# Zorg dat de output directory bestaat
+mkdir -p "$(dirname "$OUTPUT_FILE")"
 #header alleen toevoegen als bestand niet bestaat
 if [ ! -f "$OUTPUT_FILE" ]; then
     echo "timestamp,temp_celsius,energy_euro" > "$OUTPUT_FILE"
