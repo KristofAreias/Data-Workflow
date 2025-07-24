@@ -95,7 +95,6 @@ Verwerkt de ruwe JSON-data:
 - Filtert alleen de nodige velden (tijdstip en temperatuur/prijs).
 - Combineert temperatuurmetingen met bijhorende energieprijzen op basis van uur.
 - Voegt deze toe aan `processed_data/combined_data.csv` (zonder duplicaten).
-- Logt naar `logs/data_transform.log`.
 
 ### `analyze_data.py`
 
