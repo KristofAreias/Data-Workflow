@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Workflow Resultaten</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 40px auto; background: #fff; padding: 2em; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
+        h1 { color: #2c3e50; }
+        .grafiek { text-align: center; margin: 2em 0; }
+        .download { display: block; margin: 2em auto; padding: 1em 2em; background: #3498db; color: #fff; text-decoration: none; border-radius: 5px; width: fit-content; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 2em; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background: #3498db; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resultaten Data Workflow</h1>
+        <p>Hieronder vind je de meest recente grafiek en kun je het rapport downloaden.</p>
+        <div class="grafiek">
+            <img src="../reports/temp_vs_energy.png" alt="Grafiek temperatuur vs energieprijs" style="max-width:100%; border:1px solid #ccc; border-radius:4px;">
+        </div>
+        <a class="download" href="../reports/report.pdf" download>Download het volledige rapport (PDF)</a>
+        <h2>Laatste data (voorbeeld)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tijdstip</th>
+                    <th>Temperatuur (°C)</th>
+                    <th>Energieprijs (EUR)</th>
+                </tr>
+            </thead>
+            <tbody id="data-table">
+                <!-- Data wordt hieronder geladen door JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+    fetch('../processed_data/combined_data.csv')
+      .then(response => response.text())
+      .then(text => {
+        const rows = text.trim().split('\n');
+        const tbody = document.getElementById('data-table');
+        rows.slice(1, 11).forEach(row => { // max 10 rijen
+          const cols = row.split(',');
+          const tr = document.createElement('tr');
+          cols.forEach(col => {
+            const td = document.createElement('td');
+            td.textContent = col;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      });
+    </script>
+</body>
+</html>
