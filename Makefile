@@ -1,8 +1,11 @@
 # Makefile voor data workflow project
 
-.PHONY: all collect transform analyze report
+.PHONY: all setup collect transform analyze report
 
-all: collect transform analyze report
+all: setup collect transform analyze report
+
+setup:
+	chmod +x data_collect.sh data_transform.sh raport_data.sh
 
 collect:
 	bash data_collect.sh
@@ -15,5 +18,3 @@ analyze:
 
 report:
 	bash raport_data.sh
-
-clean:
