@@ -26,7 +26,9 @@ jobs:
             make \
             pandoc
           pip install pandas matplotlib
-          pip install weasyprint
+          pip install \
+          "weasyprint<59" \
+          "pydyf<0.6.0"
 
       - name: 🚀 Voer Makefile uit
         run: make all
