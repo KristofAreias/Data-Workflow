@@ -7,11 +7,6 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("./processed_data/combined_data.csv", parse_dates=["timestamp"])
 df = df.sort_values("timestamp")
 
-# Check op voldoende datapunten
-if df.shape[0] < 2:
-    print("❌ Niet genoeg datapunten om trends te tonen.")
-    exit(1)
-
 # Grafiek
 fig, ax1 = plt.subplots(figsize=(10, 5))
 ax2 = ax1.twinx()
