@@ -1,12 +1,9 @@
 name: Data Workflow
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   schedule:
     - cron: '0 * * * *'  # Elk uur uitvoeren
+  workflow_dispatch:
 
 jobs:
   run-pipeline:
