@@ -82,7 +82,7 @@ EOL
 fi
 
 # Markdown naar PDF met pandoc
-if pandoc "$REPORT_MD" -o "$REPORT_PDF"; then
+if pandoc "$REPORT_MD" -o "$REPORT_PDF" --pdf-engine=weasyprint; then
     echo "[$(date)] PDF report generated: $REPORT_PDF" >> "$LOG_OUTPUT"
 else
     echo "[$(date)] Failed to generate PDF report." >> "$LOG_OUTPUT"
