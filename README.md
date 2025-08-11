@@ -146,6 +146,9 @@ GitHub Actions zorgt ervoor dat:
 ---
 
 ## Extra's
+- Genereerd een simpele website die up to date is die een grafiek displayed, de laatste data toont en een pdf download link heeft.
+- Data combineren naar csv voor overzichtelijker project en json uit deze .csv lezen per api.
+- Gebruik gemaakt van open source tool: GitHub Actions voor 24/7 data ophaling en updating van de github repo volledig automatisch.
 
 ---
 
@@ -155,3 +158,4 @@ Het hele project is beschikbaar op GitHub:
 🔗 [**https://github.com/KristofAreias/Data-Workflow**](https://github.com/KristofAreias/Data-Workflow)
 
 Met deze geautomatiseerde workflow toon ik aan hoe publieke data gecombineerd en gevisualiseerd kan worden om inzichten te verkrijgen in hoe temperatuur mogelijk invloed heeft op de uurprijs van energie.
+
