@@ -1,5 +1,5 @@
 # Analysis report
-Generated on: 2025-08-20 06:50:11
+Generated on: 2025-08-20 07:43:56
 
 ## Overview
 This report analyzes the relationship between temperature (°C) and energy price (EUR).
@@ -8,9 +8,9 @@ This report analyzes the relationship between temperature (°C) and energy price
 ![Temperature vs Energy Price](./reports/temp_vs_energy.png)
 
 ## Summary statistics
-- **Temperature**: Mean = 20.7535, Std Dev = 4.17962
-- **Energy Price**: Mean = 0.0709491, Std Dev = 0.0408669
-- **Correlation (Pearson)**: -0.0265837
+- **Temperature**: Mean = 20.7478, Std Dev = 4.17818
+- **Energy Price**: Mean = 0.0709803, Std Dev = 0.0408379
+- **Correlation (Pearson)**: -0.0271586
 
 ## Data
 | Timestamp       | Temperature (°C) | Energy Price (EUR) |
@@ -584,3 +584,4 @@ This report analyzes the relationship between temperature (°C) and energy price
 | 2025-08-20T04:15 | 16.1 | 0.09099 |
 | 2025-08-20T05:00 | 16.1 | 0.10300 |
 | 2025-08-20T06:15 | 16.4 | 0.10498 |
+| 2025-08-20T07:00 | 17.5 | 0.08875 |
