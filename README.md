@@ -3,7 +3,7 @@
 **Student**: Kristof Areias  
 **Studentennummer**: 202186424  
 **Klasgroep**: 2E1
-
+**Website Project**: [Online overzicht](https://kristofareias.github.io/Data-Workflow)
 ---
 
 ## README Structuur
@@ -158,4 +158,5 @@ Het hele project is beschikbaar op GitHub:
 🔗 [**https://github.com/KristofAreias/Data-Workflow**](https://github.com/KristofAreias/Data-Workflow)
 
 Met deze geautomatiseerde workflow toon ik aan hoe publieke data gecombineerd en gevisualiseerd kan worden om inzichten te verkrijgen in hoe temperatuur mogelijk invloed heeft op de uurprijs van energie.
+
 
