@@ -1,44 +1,44 @@
-name: Data Workflow
+# name: Data Workflow
 
-on:
-  schedule:
-    - cron: '0 * * * *'  # Elk uur uitvoeren
-  workflow_dispatch:
+# on:
+#   schedule:
+#     - cron: '0 * * * *'  # Elk uur uitvoeren
+#   workflow_dispatch:
 
-jobs:
-  run-pipeline:
-    runs-on: ubuntu-latest
+# jobs:
+#   run-pipeline:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
+#     steps:
+#       - name: 📥 Checkout repository
+#         uses: actions/checkout@v4
 
-      - name: 🐍 Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.8'
+#       - name: 🐍 Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.8'
 
-      - name: 🧰 Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            jq \
-            make \
-            pandoc
-          pip install pandas matplotlib
-          pip install \
-          "weasyprint<59" \
-          "pydyf<0.6.0"
+#       - name: 🧰 Install dependencies
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y \
+#             jq \
+#             make \
+#             pandoc
+#           pip install pandas matplotlib
+#           pip install \
+#           "weasyprint<59" \
+#           "pydyf<0.6.0"
 
-      - name: 🚀 Voer Makefile uit
-        run: make all
-        working-directory: ./
+#       - name: 🚀 Voer Makefile uit
+#         run: make all
+#         working-directory: ./
         
-      - name: 📤 Commit en push gegenereerde bestanden
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add .
-          git commit -m "Add generated rapport files"
-          git push origin main  # Push to the same branch
+#       - name: 📤 Commit en push gegenereerde bestanden
+#         run: |
+#           git config --global user.name "GitHub Actions"
+#           git config --global user.email "actions@github.com"
+#           git add .
+#           git commit -m "Add generated rapport files"
+#           git push origin main  # Push to the same branch
 
